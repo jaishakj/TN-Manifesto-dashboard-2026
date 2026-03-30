@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TN 2026 Manifesto Scorecard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dmk-dark: #111111;
+    --dmk-red: #CC0000;
+    --admk-green: #1A7A1A;
+    --bg: #F5F3EE;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE8;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #1A1A1A;
+    --muted: #666;
+    --accent: #6B4400;
+    --ink: #141414;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-size:16px; }
+
+  /* HERO */
+  .hero { background:var(--surface); border-bottom:2px solid var(--border2); padding:40px 24px 36px; text-align:center; }
+  .hero-label { font-family:'Space Mono',monospace; font-size:12px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:10px; }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(32px,6vw,60px); font-weight:900; line-height:1.05; color:var(--ink); margin-bottom:10px; }
+  .hero-sub { font-size:15px; color:var(--muted); margin-bottom:32px; line-height:1.5; }
+  .party-row { display:grid; grid-template-columns:1fr 60px 1fr; max-width:900px; margin:0 auto; align-items:center; gap:8px; }
+  .party-card { padding:20px; border-radius:14px; display:flex; flex-direction:column; gap:6px; }
+  .party-card.dmk { background:linear-gradient(135deg,rgba(17,17,17,0.05),rgba(204,0,0,0.04)); border:2px solid rgba(100,100,100,0.2); text-align:left; }
+  .party-card.admk { background:linear-gradient(135deg,rgba(26,122,26,0.07),rgba(0,0,0,0.02)); border:2px solid rgba(26,122,26,0.22); text-align:right; align-items:flex-end; }
+  .party-name { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; }
+  .party-name.dmk { background:linear-gradient(135deg,var(--dmk-dark) 40%,var(--dmk-red) 60%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .party-name.admk { color:var(--admk-green); }
+  .party-full { font-size:13px; color:var(--muted); line-height:1.5; }
+  .party-score-big { font-family:'Playfair Display',serif; font-size:clamp(44px,8vw,64px); font-weight:900; line-height:1; margin-top:4px; }
+  .party-score-big.dmk { background:linear-gradient(135deg,var(--dmk-dark) 40%,var(--dmk-red) 60%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .party-score-big.admk { color:var(--admk-green); }
+  .score-denom { font-size:22px; }
+  .score-label { font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:1px; margin-top:3px; }
+  .vs-circle { width:50px; height:50px; border-radius:50%; background:var(--surface2); border:2px solid var(--border2); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:14px; font-weight:700; color:var(--muted); margin:0 auto; }
+
+  /* TOTAL BAND */
+  .total-band { background:#F7F4EF; border-top:2px solid #E0DBD3; border-bottom:2px solid #E0DBD3; padding:28px 24px; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px; }
+  .total-side { display:flex; flex-direction:column; gap:5px; }
+  .total-side.admk-side { text-align:right; align-items:flex-end; }
+  .total-party-label { font-family:'Space Mono',monospace; font-size:13px; letter-spacing:2px; color:#777; font-weight:700; }
+  .total-score-num { font-family:'Playfair Display',serif; font-size:clamp(56px,10vw,80px); font-weight:900; line-height:1; }
+  .total-score-num.dmk { background:linear-gradient(135deg,var(--dmk-dark) 35%,var(--dmk-red) 65%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .total-score-num.admk { color:var(--admk-green); }
+  .total-score-sub { font-size:14px; color:#888; margin-top:2px; }
+  .total-divider { text-align:center; }
+  .total-divider-label { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:2px; color:#AAA; display:block; margin-bottom:6px; }
+  .total-out-of { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:#CCC; }
+  .total-gap { font-size:15px; color:#CC0000; font-weight:700; margin-top:8px; }
+
+  /* SCORING NOTE */
+  .scoring-note { background:rgba(139,90,0,0.06); border:2px solid rgba(139,90,0,0.18); border-radius:12px; padding:18px 20px; margin-bottom:32px; font-size:14px; color:#5a3800; line-height:1.7; }
+  .scoring-note strong { color:var(--accent); }
+
+  /* CONTAINER */
+  .container { max-width:1120px; margin:0 auto; padding:32px 16px 64px; }
+
+  /* SECTION TITLE */
+  .section-title { font-family:'Space Mono',monospace; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; padding-bottom:10px; border-bottom:2px solid var(--border2); display:flex; align-items:center; gap:10px; font-weight:700; }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* HEADLINE GRID */
+  .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:40px; }
+  .summary-card { background:var(--surface); border:2px solid var(--border); border-radius:14px; padding:20px; position:relative; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .summary-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; border-radius:14px 14px 0 0; }
+  .summary-card.winner-dmk::before { background:linear-gradient(90deg,var(--dmk-dark),var(--dmk-red)); }
+  .summary-card.winner-admk::before { background:var(--admk-green); }
+  .sc-category { font-size:14px; color:#444; text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:14px; }
+  .sc-scores { display:flex; justify-content:space-between; align-items:flex-end; }
+  .sc-party { display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .sc-score { font-family:'Playfair Display',serif; font-size:40px; font-weight:700; line-height:1; }
+  .sc-score.dmk { background:linear-gradient(135deg,var(--dmk-dark) 40%,var(--dmk-red) 60%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .sc-score.admk { color:var(--admk-green); }
+  .sc-pname { font-size:13px; font-family:'Space Mono',monospace; letter-spacing:1px; color:#777; font-weight:700; }
+  .sc-bar-wrap { flex:1; margin:0 10px; display:flex; flex-direction:column; gap:6px; align-items:center; justify-content:flex-end; }
+  .sc-bar-row { width:100%; height:8px; background:#EEE; border-radius:4px; overflow:hidden; }
+  .sc-bar-fill { height:100%; border-radius:4px; }
+  .sc-bar-fill.dmk { background:linear-gradient(90deg,var(--dmk-dark),var(--dmk-red)); }
+  .sc-bar-fill.admk { background:linear-gradient(90deg,var(--admk-green),#5CB85C); }
+  .sc-winner-badge { font-size:12px; font-family:'Space Mono',monospace; padding:3px 8px; border-radius:5px; margin-top:5px; font-weight:700; }
+  .badge-dmk { background:rgba(17,17,17,0.06); color:var(--dmk-dark); border:1px solid rgba(17,17,17,0.18); }
+  .badge-admk { background:rgba(26,122,26,0.07); color:var(--admk-green); border:1px solid rgba(26,122,26,0.18); }
+
+  /* OVERVIEW 50 CATS */
+  .overview-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:40px; }
+  .ov-block { background:var(--surface); border:2px solid var(--border); border-radius:12px; padding:16px 10px; text-align:center; display:flex; flex-direction:column; gap:8px; align-items:center; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+  .ov-label { font-size:13px; color:#333; font-weight:700; min-height:36px; display:flex; align-items:center; text-align:center; line-height:1.3; }
+  .ov-pair { display:flex; gap:5px; align-items:baseline; justify-content:center; }
+  .ov-score { font-family:'Space Mono',monospace; font-size:22px; font-weight:700; line-height:1; }
+  .ov-score.dmk { color:var(--dmk-red); }
+  .ov-score.admk { color:var(--admk-green); }
+  .ov-sep { font-size:14px; color:#CCC; }
+  .ov-ring { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-family:'Space Mono',monospace; font-weight:700; }
+  .ov-ring.dmk-win { background:rgba(17,17,17,0.06); color:var(--dmk-dark); border:2px solid rgba(17,17,17,0.2); }
+  .ov-ring.admk-win { background:rgba(26,122,26,0.07); color:var(--admk-green); border:2px solid rgba(26,122,26,0.22); }
+  .ov-ring.tied { background:#F5F3EE; color:var(--muted); border:2px solid var(--border2); }
+
+  /* CAT ROWS */
+  .cat-section { margin-bottom:40px; }
+  .cat-grid { display:flex; flex-direction:column; gap:8px; }
+  .cat-row { display:grid; grid-template-columns:1fr 140px 68px 68px; gap:14px; align-items:center; padding:16px 18px; background:var(--surface); border:2px solid var(--border); border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:border-color .15s,box-shadow .15s; }
+  .cat-row:hover { border-color:var(--border2); box-shadow:0 3px 10px rgba(0,0,0,0.08); }
+  .cat-name { font-size:16px; font-weight:600; color:var(--ink); line-height:1.3; }
+  .cat-bars { display:flex; flex-direction:column; gap:6px; }
+  .bar-track { width:100%; height:8px; background:#EBEBEB; border-radius:4px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:4px; }
+  .bar-fill.dmk { background:linear-gradient(90deg,var(--dmk-dark),var(--dmk-red)); }
+  .bar-fill.admk { background:linear-gradient(90deg,var(--admk-green),#5CB85C); }
+  .cat-val { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; text-align:center; line-height:1; }
+  .cat-val.dmk { background:linear-gradient(135deg,var(--dmk-dark) 35%,var(--dmk-red) 65%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .cat-val.admk { color:var(--admk-green); }
+  .cat-label { font-size:12px; font-family:'Space Mono',monospace; color:#888; text-align:center; margin-top:3px; font-weight:700; }
+  .col-header { display:grid; grid-template-columns:1fr 140px 68px 68px; gap:14px; padding:4px 18px; margin-bottom:4px; }
+  .col-header span { font-family:'Space Mono',monospace; font-size:12px; letter-spacing:1px; color:#999; text-transform:uppercase; font-weight:700; }
+  .col-header span:nth-child(3) { color:var(--dmk-red); text-align:center; }
+  .col-header span:nth-child(4) { color:var(--admk-green); text-align:center; }
+  .diff-badge { display:inline-block; font-size:12px; font-family:'Space Mono',monospace; padding:2px 7px; border-radius:5px; margin-left:8px; vertical-align:middle; font-weight:700; }
+  .diff-dmk { background:rgba(204,0,0,0.08); color:var(--dmk-red); }
+  .diff-admk { background:rgba(26,122,26,0.08); color:var(--admk-green); }
+  .cat-row.low-admk { border-left:4px solid rgba(204,0,0,0.3); }
+
+  /* INSIGHTS */
+  .insights-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-bottom:40px; }
+  .insight-card { background:var(--surface); border:2px solid var(--border); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .insight-card.dmk-card { border-top:4px solid; border-image:linear-gradient(90deg,var(--dmk-dark),var(--dmk-red)) 1; }
+  .insight-card.admk-card { border-top:4px solid var(--admk-green); }
+  .insight-card.neutral-card { border-top:4px solid var(--accent); }
+  .insight-tag { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; padding:4px 10px; border-radius:5px; display:inline-block; margin-bottom:12px; font-weight:700; }
+  .tag-dmk { background:rgba(17,17,17,0.06); color:var(--dmk-dark); border:1px solid rgba(17,17,17,0.18); }
+  .tag-admk { background:rgba(26,122,26,0.07); color:var(--admk-green); border:1px solid rgba(26,122,26,0.18); }
+  .tag-neutral { background:rgba(107,68,0,0.07); color:var(--accent); border:1px solid rgba(107,68,0,0.18); }
+  .insight-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; line-height:1.3; margin-bottom:10px; color:var(--ink); }
+  .insight-body { font-size:14px; color:#555; line-height:1.75; }
+  .insight-stat { font-family:'Playfair Display',serif; font-size:42px; font-weight:900; line-height:1; margin-top:14px; }
+  .insight-stat.dmk { background:linear-gradient(135deg,var(--dmk-dark) 35%,var(--dmk-red) 65%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .insight-stat.admk { color:var(--admk-green); }
+  .insight-stat.neutral { color:var(--accent); }
+  .insight-stat-label { font-size:13px; color:var(--muted); margin-top:4px; }
+
+  /* VERDICT */
+  .verdict-band { background:var(--surface); border:2px solid var(--border2); border-left:5px solid var(--dmk-red); border-radius:14px; padding:32px; margin-bottom:40px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+  .verdict-title { font-family:'Space Mono',monospace; font-size:12px; letter-spacing:3px; color:var(--dmk-red); margin-bottom:14px; font-weight:700; }
+  .verdict-headline { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; line-height:1.25; margin-bottom:16px; color:var(--ink); }
+  .verdict-body { font-size:16px; color:#444; line-height:1.85; }
+
+  /* LEGEND */
+  .legend { display:flex; gap:20px; justify-content:center; margin:16px 0 32px; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:8px; font-size:14px; color:var(--muted); }
+  .legend-bar { width:26px; height:7px; border-radius:4px; }
+  .legend-bar.dmk { background:linear-gradient(90deg,var(--dmk-dark),var(--dmk-red)); }
+  .legend-bar.admk { background:var(--admk-green); }
+
+  /* FOOTER */
+  .footer { border-top:2px solid var(--border2); padding:24px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; background:var(--surface); }
+  .footer-note { font-size:13px; color:var(--muted); line-height:1.7; }
+  .footer-badge { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; color:var(--accent); font-weight:700; }
+
+  @media(max-width:768px){
+    .party-row { grid-template-columns:1fr; gap:10px; }
+    .vs-circle { display:none; }
+    .party-card.admk { text-align:left; align-items:flex-start; }
+    .total-band { grid-template-columns:1fr; text-align:center; gap:12px; }
+    .total-side.admk-side { align-items:center; text-align:center; }
+    .overview-strip { grid-template-columns:repeat(3,1fr); }
+    .cat-row { grid-template-columns:1fr 68px 68px; }
+    .cat-bars { display:none; }
+    .col-header { grid-template-columns:1fr 68px 68px; }
+    .col-header span:nth-child(2) { display:none; }
+    .summary-grid { grid-template-columns:repeat(2,1fr); }
+  }
+  @media(max-width:480px){
+    .overview-strip { grid-template-columns:repeat(2,1fr); }
+    .summary-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div style="background:#1A1A1A;color:#CCC;text-align:center;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:11.5px;line-height:1.6;border-bottom:2px solid #333;">
+  <strong style="color:#EEE;">Disclaimer:</strong> This analysis is user-generated. <strong style="color:#EEE;">Claude (Anthropic)</strong> was used as the LLM and analytical tool to compare the manifestos of DMK and ADMK for the Tamil Nadu 2026 Legislative Assembly Election. Scores reflect the analytical framework described below — they are not official, partisan, or verified by either party.
+</div>
+
+<div class="hero">
+  <div class="hero-label">Tamil Nadu Legislative Assembly Election · 2026</div>
+  <h1>Manifesto Scorecard</h1>
+  <div class="hero-sub">Independent analysis of vision, policy depth, specificity &amp; practical implementation paths across 50 dimensions</div>
+  <div class="party-row">
+    <div class="party-card dmk">
+      <div class="party-name dmk">DMK</div>
+      <div class="party-full">Dravida Munnetra Kazhagam · Dravidam Model 2.0</div>
+      <div class="party-score-big dmk">8.46<span class="score-denom">/10</span></div>
+      <div class="score-label">Average across 50 categories</div>
+    </div>
+    <div class="vs-circle">VS</div>
+    <div class="party-card admk">
+      <div class="party-name admk">ADMK</div>
+      <div class="party-full">All India Anna Dravida Munnetra Kazhagam · Let Us Save the People</div>
+      <div class="party-score-big admk">5.10<span class="score-denom">/10</span></div>
+      <div class="score-label">Average across 50 categories</div>
+    </div>
+  </div>
+</div>
+
+<div class="total-band">
+  <div class="total-side">
+    <div class="total-party-label">DMK · TOTAL SCORE</div>
+    <div class="total-score-num dmk">423</div>
+    <div class="total-score-sub">out of 500 &nbsp;(50 categories × 10)</div>
+  </div>
+  <div class="total-divider">
+    <span class="total-divider-label">POINTS GAP</span>
+    <div class="total-out-of">/ 500</div>
+    <div class="total-gap">DMK leads by 168 pts · 33.6%</div>
+  </div>
+  <div class="total-side admk-side">
+    <div class="total-party-label">ADMK · TOTAL SCORE</div>
+    <div class="total-score-num admk">255</div>
+    <div class="total-score-sub">out of 500 &nbsp;(50 categories × 10)</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="scoring-note">
+    <strong>Scoring methodology:</strong> A score of <strong>7–8</strong> requires concrete timelines, quantified targets, and an identifiable implementation mechanism. A score of <strong>5–6</strong> = vague promise with some specificity but no institutional pathway. A score of <strong>3–4</strong> = headline pledge with "steps will be taken" language and no roadmap.
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-bar dmk"></div><span>DMK (black → red gradient)</span></div>
+    <div class="legend-item"><div class="legend-bar admk"></div><span>ADMK (green)</span></div>
+    <div class="legend-item" style="font-size:10px;color:#AAA;">· Each category /10 · 50 categories · Max = 500 ·</div>
+  </div>
+
+  <!-- HEADLINE DIMS -->
+  <div class="section-title">Headline Dimensions</div>
+  <div class="summary-grid">
+    <div class="summary-card winner-dmk"><div class="sc-category">Forward Thinking</div><div class="sc-scores"><div class="sc-party"><div class="sc-score dmk">9</div><div class="sc-pname">DMK</div></div><div class="sc-bar-wrap"><div class="sc-bar-row"><div class="sc-bar-fill dmk" style="width:90%"></div></div><div class="sc-bar-row"><div class="sc-bar-fill admk" style="width:40%"></div></div><div class="sc-winner-badge badge-dmk">DMK +5</div></div><div class="sc-party"><div class="sc-score admk">4</div><div class="sc-pname">ADMK</div></div></div></div>
+    <div class="summary-card winner-dmk"><div class="sc-category">Vision & Ambition</div><div class="sc-scores"><div class="sc-party"><div class="sc-score dmk">9</div><div class="sc-pname">DMK</div></div><div class="sc-bar-wrap"><div class="sc-bar-row"><div class="sc-bar-fill dmk" style="width:90%"></div></div><div class="sc-bar-row"><div class="sc-bar-fill admk" style="width:40%"></div></div><div class="sc-winner-badge badge-dmk">DMK +5</div></div><div class="sc-party"><div class="sc-score admk">4</div><div class="sc-pname">ADMK</div></div></div></div>
+    <div class="summary-card winner-dmk"><div class="sc-category">$1T Economy Plan</div><div class="sc-scores"><div class="sc-party"><div class="sc-score dmk">9</div><div class="sc-pname">DMK</div></div><div class="sc-bar-wrap"><div class="sc-bar-row"><div class="sc-bar-fill dmk" style="width:90%"></div></div><div class="sc-bar-row"><div class="sc-bar-fill admk" style="width:50%"></div></div><div class="sc-winner-badge badge-dmk">DMK +4</div></div><div class="sc-party"><div class="sc-score admk">5</div><div class="sc-pname">ADMK</div></div></div></div>
+    <div class="summary-card winner-dmk"><div class="sc-category">Women Empowerment</div><div class="sc-scores"><div class="sc-party"><div class="sc-score dmk">9</div><div class="sc-pname">DMK</div></div><div class="sc-bar-wrap"><div class="sc-bar-row"><div class="sc-bar-fill dmk" style="width:90%"></div></div><div class="sc-bar-row"><div class="sc-bar-fill admk" style="width:60%"></div></div><div class="sc-winner-badge badge-dmk">DMK +3</div></div><div class="sc-party"><div class="sc-score admk">6</div><div class="sc-pname">ADMK</div></div></div></div>
+    <div class="summary-card winner-dmk"><div class="sc-category">Global Comparisons</div><div class="sc-scores"><div class="sc-party"><div class="sc-score dmk">8</div><div class="sc-pname">DMK</div></div><div class="sc-bar-wrap"><div class="sc-bar-row"><div class="sc-bar-fill dmk" style="width:80%"></div></div><div class="sc-bar-row"><div class="sc-bar-fill admk" style="width:30%"></div></div><div class="sc-winner-badge badge-dmk">DMK +5</div></div><div class="sc-party"><div class="sc-score admk">3</div><div class="sc-pname">ADMK</div></div></div></div>
+    <div class="summary-card winner-dmk"><div class="sc-category">Building for Future</div><div class="sc-scores"><div class="sc-party"><div class="sc-score dmk">9</div><div class="sc-pname">DMK</div></div><div class="sc-bar-wrap"><div class="sc-bar-row"><div class="sc-bar-fill dmk" style="width:90%"></div></div><div class="sc-bar-row"><div class="sc-bar-fill admk" style="width:40%"></div></div><div class="sc-winner-badge badge-dmk">DMK +5</div></div><div class="sc-party"><div class="sc-score admk">4</div><div class="sc-pname">ADMK</div></div></div></div>
+    <div class="summary-card winner-dmk"><div class="sc-category">Policy Specificity</div><div class="sc-scores"><div class="sc-party"><div class="sc-score dmk">9</div><div class="sc-pname">DMK</div></div><div class="sc-bar-wrap"><div class="sc-bar-row"><div class="sc-bar-fill dmk" style="width:90%"></div></div><div class="sc-bar-row"><div class="sc-bar-fill admk" style="width:40%"></div></div><div class="sc-winner-badge badge-dmk">DMK +5</div></div><div class="sc-party"><div class="sc-score admk">4</div><div class="sc-pname">ADMK</div></div></div></div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section-title">All 50 Categories — Quick View (DMK / ADMK)</div>
+  <div class="overview-strip">
+    <div class="ov-block"><div class="ov-label">State Rights</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Social Justice</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Art & Culture</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">4</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Tamil Devt.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Archaeology</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">SL Tamils</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">4</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Overseas Tamils</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">3</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Agriculture</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Water Mgmt.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Healthcare</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Women's Devt.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Child Protect.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">4</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Youth Welfare</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Senior Citizens</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Diff. Abled</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Transgender</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Adi Dravidar</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">OBC / MBC</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Minorities</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Labour Welfare</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Govt. Employees</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Traders</div><div class="ov-pair"><span class="ov-score dmk">7</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Police Dept.</div><div class="ov-pair"><span class="ov-score dmk">7</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Journalists</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Weavers</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">School Educ.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Higher Educ.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Skill Devt.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">4</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">AI</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">3</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Info. Tech.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Environment</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Industry</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">MSME</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">4</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Startups</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">3</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Temple Renov.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Tourism</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Sports</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Animal Husb.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Dairy Devt.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Fisheries</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Rural Devt.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Urban Devt.</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Highways</div><div class="ov-pair"><span class="ov-score dmk">7</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Transport</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Housing</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Ease Admin.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Public Distrib.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">6</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Fin. Mgmt.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">3</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Special Focus</div><div class="ov-pair"><span class="ov-score dmk">9</span><span class="ov-sep">/</span><span class="ov-score admk">4</span></div><div class="ov-ring dmk-win">DMK</div></div>
+    <div class="ov-block"><div class="ov-label">Special Indus.</div><div class="ov-pair"><span class="ov-score dmk">8</span><span class="ov-sep">/</span><span class="ov-score admk">5</span></div><div class="ov-ring dmk-win">DMK</div></div>
+  </div>
+
+  <!-- 4 DETAILED SECTIONS -->
+  <div class="cat-section">
+    <div class="section-title">Governance &amp; Identity</div>
+    <div class="col-header"><span>Category</span><span>Score Bars</span><span>DMK</span><span>ADMK</span></div>
+    <div class="cat-grid" id="gov-grid"></div>
+  </div>
+  <div class="cat-section">
+    <div class="section-title">People &amp; Welfare</div>
+    <div class="col-header"><span>Category</span><span>Score Bars</span><span>DMK</span><span>ADMK</span></div>
+    <div class="cat-grid" id="welfare-grid"></div>
+  </div>
+  <div class="cat-section">
+    <div class="section-title">Economy, Technology &amp; Infrastructure</div>
+    <div class="col-header"><span>Category</span><span>Score Bars</span><span>DMK</span><span>ADMK</span></div>
+    <div class="cat-grid" id="econ-grid"></div>
+  </div>
+  <div class="cat-section">
+    <div class="section-title">Sectors &amp; Livelihoods</div>
+    <div class="col-header"><span>Category</span><span>Score Bars</span><span>DMK</span><span>ADMK</span></div>
+    <div class="cat-grid" id="sector-grid"></div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="section-title">Key Insights</div>
+  <div class="insights-grid">
+    <div class="insight-card dmk-card"><div class="insight-tag tag-dmk">BIGGEST GAP</div><div class="insight-title">AI & Startups: Not Even the Same League</div><div class="insight-body">DMK has TN AI Mission 2.0, Tamil LLMs, AI Clinics for MSMEs, quantum simulators, ₹50,000 cr semiconductor policy, 500 GCCs. ADMK adds computer science as a school subject. That's the entirety of the technology future plan. ADMK has no startup policy, no innovation lab, no AI governance framework.</div><div class="insight-stat dmk">9 <span style="font-size:14px;color:#999">vs</span> <span style="color:var(--admk-green)">3</span></div><div class="insight-stat-label">AI score · ADMK Startups also scores 3</div></div>
+    <div class="insight-card admk-card"><div class="insight-tag tag-admk">ADMK ONLY STRENGTH</div><div class="insight-title">Direct Cash Density: Real Electoral Pull</div><div class="insight-body">₹10,000 family relief, free refrigerator, 3 LPG cylinders/year, ₹1,000 Pongal cash, Deepavali free sarees & dhotis. No implementation path needed — these are direct transfers. This is where ADMK competes. Outside cash-and-goods welfare, the manifesto is almost entirely "steps will be taken."</div><div class="insight-stat admk">6</div><div class="insight-stat-label">ADMK Women's / Labour scores — its ceiling in most areas</div></div>
+    <div class="insight-card dmk-card"><div class="insight-tag tag-dmk">FINANCE & VISION</div><div class="insight-title">Financial Management: 8 vs 3</div><div class="insight-body">DMK gives fiscal deficit management data, a credible revenue growth path, and acknowledges constraints with a plan. ADMK lists no fiscal framework, no debt management narrative, no funding source for its 297 numbered promises. "Steps will be taken" is not financial management — it's a wishlist.</div><div class="insight-stat dmk">8 <span style="font-size:14px;color:#999">vs</span> <span style="color:var(--admk-green)">3</span></div><div class="insight-stat-label">DMK / ADMK · Financial Management</div></div>
+    <div class="insight-card dmk-card"><div class="insight-tag tag-dmk">STATE RIGHTS</div><div class="insight-title">Same Words, Completely Different Depth</div><div class="insight-body">Both invoke federalism. DMK formed a Kuriyen Joseph Commission, tabled findings, demands 50% fiscal devolution with legal arguments, and links to constitutional amendment proposals. ADMK lists federal demands in a paragraph with no institutional follow-up. One is a policy position; the other is a slogan.</div><div class="insight-stat dmk">9 <span style="font-size:14px;color:#999">vs</span> <span style="color:var(--admk-green)">5</span></div><div class="insight-stat-label">DMK / ADMK · State Rights</div></div>
+    <div class="insight-card neutral-card"><div class="insight-tag tag-neutral">HONEST NOTE</div><div class="insight-title">Where ADMK Genuinely Competes: 5–6 Range</div><div class="insight-body">Police welfare, temple renovation, fisheries, weavers pension, journalists — these are areas where ADMK has specific if modest proposals. Scores of 5–6 reflect real-but-limited specificity. The problem is these are its ceiling, not its floor. In DMK's document, every equivalent section has roadmaps, timelines, and institutional anchors.</div><div class="insight-stat neutral">5–6</div><div class="insight-stat-label">ADMK's competitive score range across the full card</div></div>
+    <div class="insight-card dmk-card"><div class="insight-tag tag-dmk">TOTAL GAP</div><div class="insight-title">168 Points Separating Two Very Different Documents</div><div class="insight-body">Penalising "steps will be taken" language, rewarding institutional mechanisms, measurable targets, and implementation paths — the gap is 168 points. That is 33.6% of the total 500 available. DMK 423, ADMK 255.</div><div class="insight-stat dmk">168</div><div class="insight-stat-label">Point gap · DMK 423 vs ADMK 255 · out of 500</div></div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="verdict-band">
+    <div class="verdict-title">EDITORIAL VERDICT</div>
+    <div class="verdict-headline">DMK: Governed Document. ADMK: A Numbered Wishlist.</div>
+    <div class="verdict-body">
+      The gap of <strong>168 points</strong> reflects a methodology that penalises vague intent and rewards institutional specificity — quantified targets, funding sources, timelines, and implementation mechanisms. ADMK's manifesto, where the dominant language is "steps will be taken" with no roadmap, scores accordingly.
+      <br><br>
+      ADMK's document is a list of 297 welfare promises — many of them cash transfers or goods deliveries, which score 5–6 because execution is simple. Wherever genuine vision, fiscal pathway, institutional architecture, or a future-orientation is required — AI, startups, financial management, state rights reform, overseas Tamils, child protection — ADMK scores 3–5. It has nothing that resembles a forward policy framework.
+      <br><br>
+      DMK leads in every single one of the 50 categories. The closest contest is Police Department (7 vs 6), Fisheries (8 vs 6), Temple Renovation (8 vs 6), and Labour Welfare (9 vs 6). The widest gaps are AI (9 vs 3), Startups (9 vs 3), Financial Management (8 vs 3), Overseas Tamils (8 vs 3), and Global Comparisons (8 vs 3).
+      <br><br>
+      <strong>Final: DMK 423 · ADMK 255 · out of 500 total points across 50 dimensions.</strong>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-note">User-generated analysis. Claude (Anthropic) used as LLM &amp; analytical tool. Scores reward specificity, measurable targets, institutional mechanisms &amp; implementation pathways — not electoral intent or political sympathy.<br>Based on ADMK English manifesto and DMK Tamil manifesto, Tamil Nadu Legislative Assembly Election 2026. 50 categories × 10 = 500 max. Not affiliated with or verified by either party.</div>
+  <div class="footer-badge">TN 2026 · MANIFESTO ANALYSIS · 50 CATEGORIES</div>
+</div>
+
+<script>
+const govData=[
+  {name:"State Rights & Federalism",         dmk:9, admk:5, note:"DMK has Kuriyen Joseph Commission report; ADMK has bullet points"},
+  {name:"Social Justice & Reservation",       dmk:9, admk:5, note:"DMK monitoring commission; ADMK no enforcement mechanism"},
+  {name:"Art & Culture",                      dmk:8, admk:4, note:"ADMK lists folk arts to 'encourage' — no budget or structure"},
+  {name:"Tamil Language Development",         dmk:9, admk:5, note:"DMK has Tamil AI/LLMs; ADMK has Tamil chairs abroad"},
+  {name:"Archaeology",                        dmk:9, admk:5, note:"DMK: AMS lab, protected monument status; ADMK: list of 8 sites"},
+  {name:"Sri Lankan Tamils Welfare",          dmk:8, admk:4, note:"DMK: citizenship pathway demands; ADMK: Katchatheevu mention"},
+  {name:"Overseas Tamils Welfare",            dmk:8, admk:3, note:"ADMK has almost no overseas Tamil policy at all"},
+  {name:"Ease of Administration",             dmk:8, admk:5, note:"DMK: Super App, 1000 service overhauls; ADMK: E-Seva strengthening"},
+  {name:"Financial Management",               dmk:8, admk:3, note:"ADMK lists no fiscal path, no debt narrative, no funding source"},
+  {name:"Public Distribution System",         dmk:8, admk:6, note:"ADMK adds dal+oil to ration — specific and credible"},
+];
+const welfareData=[
+  {name:"Women's Development",                dmk:9, admk:6, note:"ADMK: ₹2,000, free bikes — decent on cash, weak on structural"},
+  {name:"Child Protection",                   dmk:9, admk:4, note:"ADMK has almost no child-specific policy framework"},
+  {name:"Youth Welfare",                      dmk:9, admk:5, note:"ADMK: unemployment allowance; DMK: full ecosystem with targets"},
+  {name:"Senior Citizens Welfare",            dmk:8, admk:6, note:"Both raise pension to ₹2,000 — ADMK matches here on basics"},
+  {name:"Differently Abled Welfare",          dmk:8, admk:5, note:"ADMK: loan waiver, some benefits; no employment policy"},
+  {name:"Transgender Welfare",                dmk:8, admk:5, note:"ADMK: housing + loans + pension — adequate but no integration plan"},
+  {name:"Adi Dravidar & Tribal",             dmk:8, admk:5, note:"ADMK: TAHDCO waiver, burial grounds; no land rights mechanism"},
+  {name:"OBC / MBC / Denotified",            dmk:8, admk:5, note:"ADMK: caste census demand — one point, no implementation structure"},
+  {name:"Minorities Welfare",                 dmk:8, admk:5, note:"ADMK: Hajj subsidy, cemetery land — devotional, not developmental"},
+  {name:"Labour Welfare",                     dmk:9, admk:6, note:"ADMK increases pension across welfare boards — some specificity"},
+  {name:"Government Employees",               dmk:9, admk:6, note:"ADMK promises 8th Pay Commission adoption — credible but passive"},
+  {name:"Traders' Welfare",                   dmk:7, admk:5, note:"ADMK: single window for licences — minimal"},
+  {name:"Police Department",                  dmk:7, admk:6, note:"ADMK has leave policy, food allowance, welfare hospitals — decent"},
+  {name:"Journalists' Welfare",               dmk:8, admk:6, note:"ADMK: pension, housing plots, medical — reasonably specific"},
+  {name:"Weavers' Welfare",                   dmk:9, admk:6, note:"ADMK: pension increase, cotton corp — two solid points"},
+];
+const econData=[
+  {name:"School Education",                   dmk:9, admk:5, note:"ADMK: free laptop, Kalvi TV return — nostalgic, not strategic"},
+  {name:"Higher Education",                   dmk:9, admk:5, note:"ADMK: 10 intl universities 'in collaboration with Harvard' — no mechanism"},
+  {name:"Skill Development",                  dmk:9, admk:4, note:"ADMK: employment exchange allowance — 1960s policy frame"},
+  {name:"Artificial Intelligence",            dmk:9, admk:3, note:"ADMK: CS as school subject. That's it. Nothing on AI governance."},
+  {name:"Information Technology",             dmk:9, admk:5, note:"ADMK: 'Tech City' concept — one-line mention, no specifics"},
+  {name:"Environment & Climate Change",       dmk:9, admk:5, note:"ADMK: tree planting on MGR/Amma birthdays — symbolism over policy"},
+  {name:"Industrial Development",             dmk:9, admk:6, note:"ADMK: Global Investors Meet every 2 years — at least a mechanism"},
+  {name:"MSME Development",                   dmk:9, admk:4, note:"ADMK: committee to 'analyze problems' — the problem is the promise"},
+  {name:"Startups",                           dmk:9, admk:3, note:"ADMK has zero startup-specific policy. No mention of ecosystem."},
+  {name:"Urban Development",                  dmk:9, admk:5, note:"ADMK: flyovers in Coimbatore — hyperlocal, not strategic"},
+  {name:"Highways",                           dmk:7, admk:5, note:"ADMK lists specific Coimbatore flyovers — granular but narrow"},
+  {name:"Transport",                          dmk:8, admk:5, note:"ADMK: free bus for men, Metro in Chennai — limited"},
+  {name:"Housing",                            dmk:9, admk:6, note:"ADMK: Amma Illam with government land purchase — credible scheme"},
+  {name:"Special Focus Area Plan",            dmk:9, admk:4, note:"ADMK has no equivalent regional differential plan"},
+  {name:"Special Industrial Plan",            dmk:8, admk:5, note:"ADMK: textile parks, pharma parks — listed, not operationalised"},
+];
+const sectorData=[
+  {name:"Agriculture & Farmers",             dmk:9, admk:6, note:"ADMK: MSP ₹3,500, solar pumps — some real specifics here"},
+  {name:"Water Management",                   dmk:8, admk:5, note:"ADMK lists river-linking projects — most duplicated from EPS era"},
+  {name:"Healthcare & Public Welfare",        dmk:9, admk:6, note:"ADMK: Amma Mini Clinics reopened, linear accelerators — decent"},
+  {name:"Animal Husbandry",                   dmk:8, admk:5, note:"ADMK: resume free milch cow scheme — a reversal, not a new plan"},
+  {name:"Milk & Dairy Development",           dmk:8, admk:5, note:"ADMK: Aavin upgrade — aspirational, no investment figure"},
+  {name:"Fisheries & Fisherfolk",             dmk:8, admk:6, note:"ADMK: sea ambulance, rescue team — a few concrete proposals"},
+  {name:"Rural Development",                  dmk:9, admk:5, note:"ADMK: Kudimaramathu continuation — credible but purely past-looking"},
+  {name:"Temple Renovation",                  dmk:8, admk:6, note:"ADMK: 5,000 kudumuzhukku — specific count, believable"},
+  {name:"Tourism Development",                dmk:8, admk:5, note:"ADMK: coastal water sports, international food street — thin"},
+  {name:"Sports Development",                 dmk:9, admk:5, note:"ADMK: cricket stadium in Coimbatore — one venue, no ecosystem"},
+];
+
+function renderRows(id,data){
+  const el=document.getElementById(id);
+  data.forEach(item=>{
+    const diff=item.dmk-item.admk;
+    const badge=diff>0?`<span class="diff-badge diff-dmk">+${diff}</span>`:'';
+    const lowClass=item.admk<=4?' low-admk':'';
+    el.innerHTML+=`<div class="cat-row${lowClass}">
+      <div class="cat-name">${item.name}${badge}</div>
+      <div class="cat-bars">
+        <div class="bar-track"><div class="bar-fill dmk" style="width:${item.dmk*10}%" title="${item.note}"></div></div>
+        <div class="bar-track"><div class="bar-fill admk" style="width:${item.admk*10}%" title="${item.note}"></div></div>
+      </div>
+      <div><div class="cat-val dmk">${item.dmk}</div><div class="cat-label">DMK</div></div>
+      <div><div class="cat-val admk">${item.admk}</div><div class="cat-label">ADMK</div></div>
+    </div>`;
+  });
+}
+renderRows('gov-grid',govData);
+renderRows('welfare-grid',welfareData);
+renderRows('econ-grid',econData);
+renderRows('sector-grid',sectorData);
+
+setTimeout(()=>{
+  document.querySelectorAll('.bar-fill').forEach(el=>{
+    const w=el.style.width;el.style.width='0';
+    requestAnimationFrame(()=>{el.style.transition='width 0.85s ease';el.style.width=w;});
+  });
+},100);
+</script>
+</body>
+</html>
