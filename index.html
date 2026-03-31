@@ -448,40 +448,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     </div>
   </div>
 
-  <!-- FIREBASE SETUP GUIDE -->
-  <div id="firebase-setup" style="background:var(--surface);border:2px solid var(--border2);border-radius:14px;padding:28px 28px 24px;margin-bottom:40px;box-shadow:var(--card-shadow);transition:background .3s;">
-    <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:14px;">🔧 FIREBASE SETUP GUIDE · 5 MINUTES</div>
-    <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:16px;">How to wire up the real-time shared poll</div>
-    <div style="display:flex;flex-direction:column;gap:16px;font-size:14px;color:var(--muted);line-height:1.8;">
-      <div style="display:flex;gap:14px;align-items:flex-start;">
-        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">1</div>
-        <div>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--tvk-blue);font-weight:600;">console.firebase.google.com</a> → <strong style="color:var(--ink);">Add project</strong> → give it any name → disable Google Analytics → Create.</div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:flex-start;">
-        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">2</div>
-        <div>In the left sidebar → <strong style="color:var(--ink);">Build → Realtime Database → Create database</strong> → choose any region → start in <strong style="color:var(--ink);">"Test mode"</strong> (allows open read/write for 30 days, enough for the election).</div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:flex-start;">
-        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">3</div>
-        <div>Copy the <strong style="color:var(--ink);">database URL</strong> — it looks like <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">https://your-project-default-rtdb.firebaseio.com</code></div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:flex-start;">
-        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">4</div>
-        <div>Open this HTML file in a text editor → find the two lines near the bottom inside <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">&lt;script&gt;</code>:<br><br>
-          <code style="display:block;background:var(--surface2);padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.8;border:1px solid var(--border2);">
-            const FB_URL  = '<span style="color:var(--dmk-red);">YOUR_FIREBASE_URL</span>';<br>
-            const FB_PATH = '/tn2026_poll';
-          </code><br>
-          Replace <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">YOUR_FIREBASE_URL</code> with your copied URL. Save the file.
-        </div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:flex-start;">
-        <div style="min-width:28px;height:28px;border-radius:50%;background:var(--admk-green);color:#FFF;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;">✓</div>
-        <div><strong style="color:var(--ink);">Push to GitHub Pages</strong> as usual. Every visitor now shares the same vote counter. Results auto-refresh every 15 seconds. One vote per browser (via localStorage guard).</div>
-      </div>
-    </div>
-  </div>
-
   <!-- VERDICT -->
   <div class="verdict-band">
     <div class="verdict-title">EDITORIAL VERDICT · THREE PARTIES</div>
