@@ -650,43 +650,6 @@ setTimeout(()=>{
   });
 },150);
 
-// ---- COUNTDOWN ----
-function cdUnit(v, label, color){
-  return `<div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-    <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1;color:${color};">${String(v).padStart(2,'0')}</div>
-    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:700;">${label}</div>
-  </div>
-  <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--border2);align-self:flex-start;margin-top:4px;">:</div>`;
-}
-function cdUnitLast(v, label, color){
-  return `<div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-    <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1;color:${color};">${String(v).padStart(2,'0')}</div>
-    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:700;">${label}</div>
-  </div>`;
-}
-function renderCountdown(targetDate, elId, color, doneMsg){
-  const el = document.getElementById(elId);
-  if(!el) return;
-  const diff = targetDate - Date.now();
-  if(diff <= 0){
-    el.innerHTML = `<div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:${color};">${doneMsg}</div>`;
-    return;
-  }
-  const d = Math.floor(diff/86400000);
-  const h = Math.floor((diff%86400000)/3600000);
-  const m = Math.floor((diff%3600000)/60000);
-  const s = Math.floor((diff%60000)/1000);
-  el.innerHTML = cdUnit(d,'DAYS',color) + cdUnit(h,'HRS',color) + cdUnit(m,'MIN',color) + cdUnitLast(s,'SEC',color);
-}
-const VOTE_DATE   = new Date('2026-04-23T07:00:00+05:30');
-const RESULT_DATE = new Date('2026-05-04T08:00:00+05:30');
-function tickCountdowns(){
-  renderCountdown(VOTE_DATE,   'cd-vote',   'var(--dmk-red)',    '🗳 Polls are open today!');
-  renderCountdown(RESULT_DATE, 'cd-result', 'var(--admk-green)', '📊 Results are out!');
-}
-tickCountdowns();
-setInterval(tickCountdowns, 1000);
-
 // ---- FIREBASE CONFIG — REPLACE THESE TWO VALUES ----
 const FB_URL   = 'https://tn-elec-53db0-default-rtdb.firebaseio.com/';   // e.g. https://my-project-default-rtdb.firebaseio.com
 const FB_PATH  = '/tn2026_poll';        // path inside your DB — keep as-is or rename
