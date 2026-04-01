@@ -314,6 +314,19 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 </div>
 
 <div class="container">
+  <!-- COUNTDOWN -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;" id="countdown-wrap">
+    <div style="background:var(--surface);border:2px solid var(--border2);border-radius:14px;padding:22px 20px;box-shadow:var(--card-shadow);text-align:center;transition:background .3s;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--dmk-red);font-weight:700;margin-bottom:10px;">🗳 ELECTION DAY · APR 23, 2026</div>
+      <div style="display:flex;justify-content:center;gap:12px;" id="cd-vote"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:10px;font-family:'DM Sans',sans-serif;">Tamil Nadu votes in a single phase</div>
+    </div>
+    <div style="background:var(--surface);border:2px solid var(--border2);border-radius:14px;padding:22px 20px;box-shadow:var(--card-shadow);text-align:center;transition:background .3s;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--admk-green);font-weight:700;margin-bottom:10px;">📊 RESULTS DAY · MAY 4, 2026</div>
+      <div style="display:flex;justify-content:center;gap:12px;" id="cd-result"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:10px;font-family:'DM Sans',sans-serif;">Counting begins · Winner announced</div>
+    </div>
+  </div>
 
   <div class="scoring-note">
     <strong>Scoring methodology:</strong> <strong>7–8</strong> = concrete timelines, quantified targets, identifiable implementation mechanism. <strong>5–6</strong> = vague promise with some specificity, no institutional pathway. <strong>3–4</strong> = headline pledge, "steps will be taken," no roadmap. TVK is a <em>debut party</em> — scores reflect manifesto depth, not electoral credibility. TVK's manifesto is youth-centric and narrower in scope; ADMK covers more sectors but with less depth.
@@ -821,6 +834,24 @@ if(!configured()){
 } else if(hasVoted()){
   showResults();
 }
+  
+function cdUnit(v,label,color){return`<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1;color:${color};">${String(v).padStart(2,'0')}</div><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:700;">${label}</div></div><div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--border2);align-self:flex-start;margin-top:4px;">:</div>`;}
+function cdUnitLast(v,label,color){return`<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1;color:${color};">${String(v).padStart(2,'0')}</div><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:700;">${label}</div></div>`;}
+function renderCountdown(targetDate,elId,color,doneMsg){
+  const el=document.getElementById(elId);if(!el)return;
+  const diff=targetDate-Date.now();
+  if(diff<=0){el.innerHTML=`<div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:${color};">${doneMsg}</div>`;return;}
+  const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  el.innerHTML=cdUnit(d,'DAYS',color)+cdUnit(h,'HRS',color)+cdUnit(m,'MIN',color)+cdUnitLast(s,'SEC',color);
+}
+const VOTE_DATE=new Date('2026-04-23T07:00:00+05:30');
+const RESULT_DATE=new Date('2026-05-04T08:00:00+05:30');
+function tickCountdowns(){
+  renderCountdown(VOTE_DATE,'cd-vote','#CC0000','🗳 Polls are open today!');
+  renderCountdown(RESULT_DATE,'cd-result','#1A7A1A','📊 Results are out!');
+}
+tickCountdowns();
+setInterval(tickCountdowns,1000);
 
 // ---- DARK MODE ----
 function toggleDark(){
