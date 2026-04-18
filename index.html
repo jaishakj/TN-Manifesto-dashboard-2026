@@ -259,6 +259,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   .cat-row{grid-template-columns:1fr 52px 52px 52px;}
   .cat-val{font-size:20px;}
 }
+  
+.donate-toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--surface);border:2px solid var(--border2);border-radius:14px;padding:18px 20px;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-family:'DM Sans',sans-serif;transition:opacity .4s,transform .4s,background .3s;}
+.donate-toast.hidden{opacity:0;pointer-events:none;transform:translateY(12px);}
+.donate-close{position:absolute;top:10px;right:12px;background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);line-height:1;}
+.donate-upi{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;font-family:'Space Mono',monospace;font-size:13px;color:var(--ink);margin:12px 0 10px;letter-spacing:0.5px;}
+.donate-copy{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;font-weight:700;padding:7px 16px;border-radius:8px;background:var(--accent);color:#FFF;border:none;cursor:pointer;transition:opacity .15s;}
+.donate-copy:hover{opacity:0.85;}
+  
 </style>
 </head>
 <body>
@@ -896,6 +904,17 @@ function toggleDark(){
   document.getElementById('dm-icon').textContent=isDark?'🌙':'☀️';
   document.getElementById('dm-label').textContent=isDark?'DARK':'LIGHT';
 }
+</script>
+  
+<div class="donate-toast" id="donate-toast">
+  <button class="donate-close" onclick="document.getElementById('donate-toast').classList.add('hidden')">✕</button>
+  <div style="font-size:14px;color:var(--muted);line-height:1.7;">No ads, no paywalls, because we believe informed voters make better elections. But AI isn't cheap. If you find this useful, supporting us would be a great help.</div>
+  <div class="donate-upi">wiselyproject@ptyes</div>
+  <button class="donate-copy" onclick="navigator.clipboard.writeText('wiselyproject@ptyes').then(()=>{this.textContent='COPIED ✓';setTimeout(()=>this.textContent='Copy UPI',2000)})">Copy UPI</button>
+</div>
+<script>
+  setTimeout(()=>document.getElementById('donate-toast').classList.remove('hidden'),3000);
+  document.getElementById('donate-toast').classList.add('hidden');
 </script>
 </body>
 </html>
